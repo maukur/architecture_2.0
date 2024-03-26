@@ -8,8 +8,7 @@
 
 import SwiftUI
 
-@MainActor
-final class ApplicationViewBuilder : Assembly, ObservableObject {
+final class ApplicationViewBuilder : MainActorAssembly, ObservableObject {
     
     required init(container: Container) {
         super.init(container: container)

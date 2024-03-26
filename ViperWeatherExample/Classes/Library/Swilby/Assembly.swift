@@ -23,6 +23,15 @@ class Assembly: AssemblyType {
     }
 }
 
+@MainActor
+class MainActorAssembly {
+    var container: Container
+    
+    required init(container: Container) {
+        self.container = container
+    }
+}
+
 // Box
 extension Assembly {
     func weakBox<T>(_ configure: () -> T) -> T {

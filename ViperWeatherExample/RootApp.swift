@@ -31,7 +31,7 @@ class RootApp: App {
     }()
 
     required init() {
-        navigationService = container.resolve(NavigationAssembly.self).build() as! NavigationService
+        navigationService = container.resolve(NavigationAssembly.self).build() 
         
         appViewBuilder = ApplicationViewBuilder(container: container)
     }
