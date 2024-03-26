@@ -8,16 +8,6 @@
 
 import Foundation
 
-final class WeatherDetailsRouter: WeatherDetailsRouterProtocol {
-    private var navigation: any NavigationServiceType
-    
-    init(navigation: any NavigationServiceType){
-        self.navigation = navigation
-    }
-    
-    @MainActor
-    func navigateBack() {
-        navigation.items.removeLast()
-    }
-       
+final class WeatherDetailsRouter: BaseRouter, WeatherDetailsRouterProtocol {
+   
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol NavigationServiceType: ObservableObject, Identifiable {
+@MainActor protocol NavigationServiceType: AnyObject, ObservableObject, Identifiable {
     var items:[Views] { get set }
     var modalView: Views? { get set }
 }

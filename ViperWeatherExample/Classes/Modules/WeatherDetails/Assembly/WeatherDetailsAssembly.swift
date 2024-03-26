@@ -11,6 +11,7 @@ import SwiftUI
 
 final class WeatherDetailsAssembly: Assembly {
     
+    @MainActor 
     func build(weather: WeatherData, didReset: (()->Void)?) -> some View {
         
         let navigation = container.resolve(NavigationAssembly.self).build()
@@ -25,9 +26,10 @@ final class WeatherDetailsAssembly: Assembly {
         let viewState =  WeatherDetailsViewState()
 
         // Presenter
-        let presenter = WeatherDetailsPresenter(router: router, viewState: viewState, interactor: interactor, didReset: didReset)
+        let presenter = WeatherDetailsPresenter(interactor: interactor, router: router, didReset: didReset)
         
         viewState.set(with: presenter)
+        presenter.view = viewState
         
         // View
         let view = WeatherDetailsView(viewState: viewState)

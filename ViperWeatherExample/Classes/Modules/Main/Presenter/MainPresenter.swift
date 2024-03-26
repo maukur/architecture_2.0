@@ -8,48 +8,49 @@
 
 import SwiftUI
 
-final class MainPresenter: MainPresenterProtocol {
+final class MainPresenter: BasePresenter<MainInteractor, MainRouter>, MainPresenterProtocol {
    
-    private let router: MainRouterProtocol
-    private let viewState: any MainViewStateInputProtocol
-    private let interactor: MainInteractorProtocol
+    // MARK: - Weak properties
+    weak var view: MainViewStateInputProtocol?
+   
+}
+
+// MARK: Private
+extension MainPresenter {
     
-    init(router: MainRouterProtocol,
-         interactor: MainInteractorProtocol,
-         viewState: any MainViewStateInputProtocol) {
-        self.router = router
-        self.interactor = interactor
-        self.viewState = viewState
-    }
+}
+
+// MARK: MainPresenterProtocol
+extension MainPresenter  {
     
-    func didQueryChanged(query: String) {
-        Task {
-            do {
-                if query == "" {
-                    await viewState.set(state: .none)
-                    return
-                }
-               
-                try await interactor.search(by: query)
-                guard let weather = interactor.weather else {
-                    return
-                }
-                await viewState.set(state: .show(weater: "\(weather.main.temp)°F"))
-            } catch {
-                await viewState.set(state: .error(error: error.localizedDescription))
-            }
-        }
-    }
-    
-    func didTapShowMoreButton() {
-        Task {
-            guard let weather = interactor.weather else { return  }
-            await router.navigateToDetails(weather: weather) { [weak self] in
-                guard let self else { return }
-                Task {
-                    await self.viewState.reset()
-                }
-            }
-        }
-    }
+     func didQueryChanged(query: String) {
+         Task {
+             do {
+                 if query == "" {
+                     await view?.set(state: .none)
+                     return
+                 }
+                
+                 try await interactor.search(by: query)
+                 guard let weather = interactor.weather else {
+                     return
+                 }
+                 await view?.set(state: .show(weater: "\(weather.main.temp)°F"))
+             } catch {
+                 await view?.set(state: .error(error: error.localizedDescription))
+             }
+         }
+     }
+     
+     func didTapShowMoreButton() {
+         Task {
+             guard let weather = interactor.weather else { return  }
+             await router.navigateToDetails(weather: weather) { [weak self] in
+                 guard let self else { return }
+                 Task {
+                     await self.view?.reset()
+                 }
+             }
+         }
+     }
 }

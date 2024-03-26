@@ -11,6 +11,7 @@ import SwiftUI
 
 final class MainAssembly: Assembly {
     
+    @MainActor 
     func build() -> some View {
         
         let navigation = container.resolve(NavigationAssembly.self).build()
@@ -26,11 +27,10 @@ final class MainAssembly: Assembly {
         let viewState =  MainViewState()
 
         // Presenter
-        let presenter = MainPresenter(router: router,
-                                                           interactor: interactor,
-                                                           viewState: viewState)
+        let presenter = MainPresenter(interactor: interactor, router: router)
         
         viewState.prepare(with: presenter)
+        presenter.view = viewState
         
         // View
         let view = MainView(viewState: viewState)

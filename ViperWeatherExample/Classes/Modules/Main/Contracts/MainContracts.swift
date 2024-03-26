@@ -10,12 +10,12 @@ import SwiftUI
 
 
 // Router
-protocol MainRouterProtocol: RouterProtocol {
+protocol MainRouterProtocol {
     @MainActor func navigateToDetails(weather: WeatherData,didReset: (()->Void)?)
 }
 
 // Presenter
-protocol MainPresenterProtocol: PresenterProtocol {
+protocol MainPresenterProtocol: AnyObject {
     func didTapShowMoreButton()
     func didQueryChanged(query: String)
 }
@@ -34,7 +34,7 @@ protocol MainViewStateOutputProtocol: ObservableObject {
     var state: MainViewViewState { get }
 }
 
-protocol MainViewStateInputProtocol {
+protocol MainViewStateInputProtocol: AnyObject {
     @MainActor func set(state: MainViewViewState)
     @MainActor func reset()
 }

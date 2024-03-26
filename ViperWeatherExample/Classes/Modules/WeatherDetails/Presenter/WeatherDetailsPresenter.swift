@@ -8,23 +8,21 @@
 
 import SwiftUI
 
-final class WeatherDetailsPresenter: WeatherDetailsPresenterProtocol {
+final class WeatherDetailsPresenter: BasePresenter<WeatherDetailsInteractor, WeatherDetailsRouter>, WeatherDetailsPresenterProtocol {
+
+    // MARK: - Weak properties
+    weak var view: WeatherDetailsViewStateInputProtocol? = nil
+    private var didReset: (()->Void)? = nil
     
-    private let router: WeatherDetailsRouterProtocol
-    private let viewState: WeatherDetailsViewStateInputProtocol
-    private let interactor: WeatherDetailsInteractorProtocol
-    private let didReset: (()->Void)?
-    
-    init(router: any WeatherDetailsRouterProtocol, viewState: WeatherDetailsViewStateInputProtocol, interactor: any WeatherDetailsInteractorProtocol, didReset: (() -> Void)? = nil) {
-        self.router = router
-        self.viewState = viewState
-        self.interactor = interactor
+    init(interactor: WeatherDetailsInteractor, router: WeatherDetailsRouter, didReset: (() -> Void)? = nil) {
+        super.init(interactor: interactor, router: router)
         self.didReset = didReset
     }
     
+    
     func onAppear() {
         Task {
-            await viewState.set(weather: interactor.weather)
+            await view?.set(weather: interactor.weather)
         }
     }
     
@@ -34,7 +32,7 @@ final class WeatherDetailsPresenter: WeatherDetailsPresenterProtocol {
             let timerSeconds = 3
             for sec in 0...timerSeconds {
                 try? await Task.sleep(for: .seconds(1))
-                await viewState.set(closeTime: timerSeconds-sec)
+                await view?.set(closeTime: timerSeconds-sec)
             }
             await router.navigateBack()
         }

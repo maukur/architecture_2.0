@@ -57,7 +57,7 @@ class StubNavigation: NavigationServiceType, ObservableObject, Equatable  {
     
     fileprivate init() {}
     
-    static var stub: any NavigationServiceType { NavigationService() }
+    static var stub: NavigationService = NavigationService() 
     
     @Published var items: [Views] = []
 }

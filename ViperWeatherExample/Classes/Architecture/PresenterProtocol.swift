@@ -6,6 +6,13 @@
 //  
 //
 
-protocol PresenterProtocol: AnyObject {
-  
+
+class BasePresenter<I: InteractorProtocol, R: BaseRouter> {
+    let interactor: I
+    let router: R
+    
+    init(interactor: I, router: R) {
+        self.interactor = interactor
+        self.router = router
+    }
 }

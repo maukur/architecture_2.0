@@ -8,13 +8,8 @@
 
 import Foundation
 
-final class MainRouter: MainRouterProtocol {
-    fileprivate var navigation: any NavigationServiceType
-    
-    init(navigation: any NavigationServiceType){
-        self.navigation = navigation
-    }
-       
+final class MainRouter: BaseRouter, MainRouterProtocol {
+   
     @MainActor
     func navigateToDetails(weather: WeatherData,didReset: (()->Void)?) {
         navigation.items.append(.weatherDetails(weather: weather, didReset: didReset))
